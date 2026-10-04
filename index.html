@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LibraCore — Library Management System</title>
+<style>
+:root{--navy:#12233f;--navy-2:#1b3154;--green:#2f8f72;--green-dark:#25735b;--warm:#e6a64b;--bg:#f5f7f8;--surface:#fff;--text:#172033;--muted:#687386;--border:#e2e7ec;--danger:#c94b58;--danger-bg:#fff0f1;--success:#277a5d;--success-bg:#eaf7f1;--warning:#a96d14;--warning-bg:#fff6e5;--shadow:0 12px 35px rgba(18,35,63,.08);--radius:14px}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);background:var(--bg)}body{overflow-x:hidden}button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+/* Login */
+.login-screen{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 20% 20%,rgba(47,143,114,.15),transparent 35%),linear-gradient(135deg,#10213c,#1b3154 55%,#163d45)}
+.login-card{width:min(430px,100%);background:rgba(255,255,255,.98);border-radius:22px;padding:34px;box-shadow:0 25px 80px rgba(0,0,0,.24)}
+.brand{display:flex;align-items:center;gap:12px}.brand-mark{width:48px;height:48px;border-radius:13px;background:var(--navy);color:white;display:grid;place-items:center;font-size:25px}.brand h1{font-size:20px;margin:0}.brand p{font-size:12px;color:var(--muted);margin:3px 0 0}.login-heading{margin:28px 0 20px}.login-heading h2{margin:0 0 7px;font-size:27px}.login-heading p{margin:0;color:var(--muted);font-size:14px}.field{display:grid;gap:7px;margin-bottom:16px}.field label{font-size:13px;font-weight:700;color:#364154}.field input,.field select{width:100%;height:44px;border:1px solid var(--border);border-radius:9px;padding:0 12px;background:#fff;color:var(--text);outline:none}.field input:focus,.field select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(47,143,114,.14)}.password-wrap{position:relative}.password-wrap input{padding-right:74px}.show-password{position:absolute;right:7px;top:5px;height:34px;border:0;background:transparent;color:var(--green-dark);font-size:12px;font-weight:700}.login-options{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);margin:4px 0 18px}.remember{display:flex;align-items:center;gap:7px;cursor:pointer}.remember input{accent-color:var(--green)}.btn{border:0;border-radius:9px;min-height:40px;padding:0 14px;font-weight:750;font-size:13px;transition:.18s ease}.btn:focus-visible,.nav-link:focus-visible,.icon-btn:focus-visible{outline:3px solid rgba(47,143,114,.25);outline-offset:2px}.btn-primary{background:var(--green);color:#fff}.btn-primary:hover{background:var(--green-dark);transform:translateY(-1px)}.btn-secondary{background:#edf2f5;color:var(--navy)}.btn-danger{background:var(--danger-bg);color:var(--danger)}.btn-success{background:var(--success-bg);color:var(--success)}.btn-warning{background:var(--warning-bg);color:var(--warning)}.btn-block{width:100%}.demo-hint{margin-top:18px;padding:11px 12px;border:1px dashed #cdd6de;background:#f8fafb;border-radius:9px;font-size:12px;color:var(--muted)}.demo-hint strong{color:var(--navy)}.inline-error{min-height:18px;color:var(--danger);font-size:12px;font-weight:600;margin:-7px 0 10px}
+/* App shell */
+.app-shell{min-height:100vh}.sidebar{position:fixed;inset:0 auto 0 0;width:250px;background:var(--navy);color:#dce6f4;padding:22px 14px;z-index:50;display:flex;flex-direction:column;transition:transform .25s ease}.sidebar-brand{display:flex;align-items:center;gap:11px;padding:5px 10px 27px}.sidebar-brand .brand-mark{width:42px;height:42px;font-size:21px;background:var(--green)}.sidebar-brand strong{display:block;color:white;font-size:16px}.sidebar-brand small{color:#91a4bd;font-size:10px}.nav{display:grid;gap:5px}.nav-link{border:0;background:transparent;color:#b9c7d9;text-decoration:none;text-align:left;width:100%;padding:12px 13px;border-radius:9px;display:flex;align-items:center;gap:11px;font-weight:650;font-size:13px}.nav-link:hover{background:rgba(255,255,255,.07);color:#fff}.nav-link.active{background:#264260;color:#fff;box-shadow:inset 3px 0 0 var(--warm)}.nav-icon{width:21px;text-align:center;font-size:17px}.sidebar-footer{margin-top:auto;padding-top:16px;border-top:1px solid rgba(255,255,255,.08)}.sidebar-logout{color:#f0a8ae}.main{margin-left:250px;min-height:100vh}.topbar{height:72px;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:30}.top-left{display:flex;align-items:center;gap:14px}.mobile-toggle{display:none}.page-title h2{font-size:18px;margin:0}.page-title p{font-size:11px;color:var(--muted);margin:3px 0 0}.admin-menu{position:relative}.admin-trigger{border:0;background:transparent;display:flex;align-items:center;gap:9px;padding:4px;border-radius:10px}.admin-trigger:hover{background:#f1f4f6}.avatar{width:38px;height:38px;border-radius:50%;background:#dceee8;color:var(--green-dark);display:grid;place-items:center;font-size:12px;font-weight:850}.admin-meta{text-align:left}.admin-meta strong{display:block;font-size:12px}.admin-meta span{display:block;font-size:10px;color:var(--muted)}.chevron{color:var(--muted);font-size:12px}.admin-dropdown{position:absolute;right:0;top:50px;width:170px;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow);padding:7px;display:none}.admin-dropdown.open{display:block}.admin-dropdown button{width:100%;border:0;background:transparent;padding:10px;text-align:left;border-radius:7px;color:var(--danger);font-weight:700;font-size:12px}.admin-dropdown button:hover{background:var(--danger-bg)}.content{padding:28px;max-width:1500px;margin:auto}.page{display:none}.page.active{display:block}.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:22px}.page-head h1{font-size:25px;margin:0 0 5px}.page-head p{font-size:13px;color:var(--muted);margin:0}.welcome{margin-bottom:20px}.welcome h1{font-size:26px;margin:0 0 5px}.welcome p{color:var(--muted);font-size:13px;margin:0}
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:17px;margin-bottom:22px}.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:space-between}.stat-card .label{font-size:12px;color:var(--muted);margin-bottom:7px}.stat-card .number{font-size:30px;line-height:1;font-weight:850}.stat-icon{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;font-size:21px}.icon-blue{background:#eaf0fb;color:#345b9d}.icon-green{background:#e6f5ef;color:var(--green-dark)}.icon-warm{background:#fff2dc;color:var(--warning)}
+/* Panels/tables */
+.panel{background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.panel-header{padding:17px 19px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}.panel-header h3{font-size:14px;margin:0}.panel-header span{font-size:11px;color:var(--muted)}.table-wrap{overflow-x:auto;max-width:100%}table{border-collapse:collapse;width:100%;min-width:720px}th,td{padding:13px 17px;border-bottom:1px solid #edf0f3;text-align:left;font-size:12px;white-space:nowrap}th{font-size:11px;color:#6b7688;background:#fafbfc;font-weight:800}td{color:#30394b}tbody tr:hover{background:#fbfcfd}tbody tr:last-child td{border-bottom:0}.actions{display:flex;gap:6px}.empty{text-align:center;padding:40px 20px;color:var(--muted)!important;font-size:13px!important}.badge{display:inline-flex;align-items:center;padding:5px 9px;border-radius:30px;font-size:10px;font-weight:800}.badge-issued{background:#fff2dc;color:#a86b11}.badge-returned{background:#e9f7f0;color:#28765b}.badge-overdue{background:#fff0f1;color:#c44855}.badge-available{background:#e9f7f0;color:#28765b}.badge-unavailable{background:#fff2dc;color:#a86b11}
+/* Forms */
+.form-panel{padding:20px;margin-bottom:20px}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.form-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.form-actions{display:flex;gap:9px;margin-top:4px}.form-title{font-size:14px;font-weight:800;margin:0 0 17px}.form-subtle{font-size:11px;color:var(--muted);margin:-10px 0 17px}.form-error{font-size:11px;color:var(--danger);min-height:15px;margin-top:-3px}.is-invalid{border-color:var(--danger)!important;box-shadow:0 0 0 3px rgba(201,75,88,.08)!important}.section-grid{display:grid;grid-template-columns:1fr 1.6fr;gap:20px}.filter-bar{padding:15px;background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:17px}.filter-grid{display:grid;grid-template-columns:repeat(3,1fr) auto;gap:11px}.filter-grid .field{margin:0}.form-mode-note{font-size:11px;color:var(--green-dark);font-weight:700;background:#eef8f4;padding:8px 10px;border-radius:7px;margin-bottom:15px}
+/* Modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(9,18,32,.55);z-index:100;display:grid;place-items:center;padding:20px}.modal{width:min(430px,100%);background:#fff;border-radius:15px;box-shadow:0 25px 70px rgba(0,0,0,.25);padding:22px}.modal h3{margin:0 0 7px;font-size:17px}.modal p{margin:0;color:var(--muted);font-size:12px;line-height:1.55}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}.modal-danger{border-top:4px solid var(--danger)}
+/* Toast */
+.toast-stack{position:fixed;right:20px;bottom:20px;z-index:200;display:grid;gap:9px;width:min(340px,calc(100vw - 40px))}.toast{background:#172033;color:#fff;border-radius:10px;padding:12px 14px;box-shadow:0 15px 35px rgba(0,0,0,.18);font-size:12px;display:flex;align-items:center;gap:9px;animation:toastIn .2s ease}.toast.success{border-left:4px solid #4fc28d}.toast.error{border-left:4px solid #ef6d77}.toast.info{border-left:4px solid var(--warm)}@keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+/* Overlay */
+.sidebar-overlay{display:none}
+@media(max-width:1000px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:none}.main{margin-left:0}.mobile-toggle{display:grid;place-items:center;border:0;background:#eef2f5;color:var(--navy);width:38px;height:38px;border-radius:9px;font-size:19px}.sidebar-overlay.visible{display:block;position:fixed;inset:0;background:rgba(8,17,30,.45);z-index:40}.content{padding:22px}.section-grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:720px){.topbar{padding:0 16px}.admin-meta,.chevron{display:none}.content{padding:18px 14px}.stats{grid-template-columns:1fr}.page-head{align-items:flex-start;flex-direction:column}.form-grid,.form-grid.three,.filter-grid{grid-template-columns:1fr}.form-actions{flex-wrap:wrap}.login-card{padding:27px 22px}.login-heading h2{font-size:24px}.panel-header{padding:14px}.section-grid{gap:14px}}
+@media(max-width:400px){.topbar{height:64px}.page-title h2{font-size:16px}.content{padding:15px 10px}.login-screen{padding:12px}.login-card{border-radius:16px;padding:24px 18px}.welcome h1{font-size:23px}}
+</style>
+</head>
+<body>
+
+<!-- Demo authentication only. Real authentication requires a server, hashed passwords and secure sessions. -->
+<section id="loginScreen" class="login-screen" aria-label="Admin login">
+  <div class="login-card">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">▥</div>
+      <div><h1>LibraCore</h1><p>College Library Management</p></div>
+    </div>
+    <div class="login-heading"><h2>Welcome back</h2><p>Sign in to access your library dashboard.</p></div>
+    <form id="loginForm" novalidate>
+      <div class="field"><label for="loginUser">Username</label><input id="loginUser" name="username" autocomplete="username" required placeholder="Enter username"></div>
+      <div class="field"><label for="loginPass">Password</label><div class="password-wrap"><input id="loginPass" name="password" type="password" autocomplete="current-password" required placeholder="Enter password"><button type="button" class="show-password" id="togglePassword">Show</button></div></div>
+      <div id="loginError" class="inline-error" role="alert" aria-live="polite"></div>
+      <div class="login-options"><label class="remember"><input id="rememberMe" type="checkbox"> Remember me</label><span>Admin access</span></div>
+      <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+    <div class="demo-hint">Demo credentials: <strong>admin</strong> / <strong>admin123</strong></div>
+  </div>
+</section>
+
+<div id="appShell" class="app-shell hidden">
+  <aside id="sidebar" class="sidebar" aria-label="Main navigation">
+    <div class="sidebar-brand"><div class="brand-mark">▥</div><div><strong>LibraCore</strong><small>College Library</small></div></div>
+    <nav class="nav" id="mainNav">
+      <button class="nav-link active" data-page="dashboard"><span class="nav-icon">⌂</span>Dashboard</button>
+      <button class="nav-link" data-page="books"><span class="nav-icon">▤</span>Books</button>
+      <button class="nav-link" data-page="students"><span class="nav-icon">♙</span>Students</button>
+      <button class="nav-link" data-page="issues"><span class="nav-icon">↔</span>Issue / Return</button>
+    </nav>
+    <div class="sidebar-footer"><button id="sidebarLogout" class="nav-link sidebar-logout"><span class="nav-icon">↪</span>Logout</button></div>
+  </aside>
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="top-left"><button id="mobileToggle" class="mobile-toggle" aria-label="Open menu">☰</button><div class="page-title"><h2 id="pageTitle">Dashboard</h2><p>Library administration portal</p></div></div>
+      <div class="admin-menu">
+        <button id="adminTrigger" class="admin-trigger" aria-expanded="false"><div id="adminAvatar" class="avatar">AD</div><div class="admin-meta"><strong id="adminName">Admin</strong><span>Administrator</span></div><span class="chevron">▾</span></button>
+        <div id="adminDropdown" class="admin-dropdown"><button id="headerLogout">↪ &nbsp; Logout</button></div>
+      </div>
+    </header>
+
+    <div class="content">
+      <section id="page-dashboard" class="page active" aria-labelledby="dashboardHeading">
+        <div class="welcome"><h1 id="dashboardHeading">Welcome back, Admin</h1><p>Here is today's overview of your library.</p></div>
+        <div class="stats">
+          <article class="stat-card"><div><div class="label">Total Books</div><div id="statBooks" class="number">0</div></div><div class="stat-icon icon-blue">▤</div></article>
+          <article class="stat-card"><div><div class="label">Total Students</div><div id="statStudents" class="number">0</div></div><div class="stat-icon icon-green">♙</div></article>
+          <article class="stat-card"><div><div class="label">Currently Issued Books</div><div id="statIssued" class="number">0</div></div><div class="stat-icon icon-warm">↗</div></article>
+        </div>
+        <div class="panel"><div class="panel-header"><h3>Recent Issue Activity</h3><span>Latest records</span></div><div class="table-wrap"><table><thead><tr><th>Book</th><th>Student</th><th>Issue Date</th><th>Return Date</th><th>Status</th></tr></thead><tbody id="recentIssuesBody"></tbody></table></div></div>
+      </section>
+
+      <section id="page-books" class="page" aria-labelledby="booksHeading">
+        <div class="page-head"><div><h1 id="booksHeading">Books</h1><p>Add, edit and manage your library catalogue.</p></div><button id="bookFormToggle" class="btn btn-primary">+ Add New Book</button></div>
+        <div id="bookFormPanel" class="panel form-panel hidden"><h3 id="bookFormTitle" class="form-title">Add New Book</h3><div id="bookEditNote" class="form-mode-note hidden">Editing an existing book. Save changes or cancel to return to add mode.</div><form id="bookForm" novalidate><input id="bookId" type="hidden"><div class="form-grid"><div class="field"><label for="bookName">Book Name *</label><input id="bookName" required></div><div class="field"><label for="bookAuthor">Author *</label><input id="bookAuthor" required></div><div class="field"><label for="bookCategory">Category *</label><input id="bookCategory" required placeholder="e.g. Computer Science"></div><div class="field"><label for="bookISBN">ISBN *</label><input id="bookISBN" required></div></div><div class="form-actions"><button type="submit" class="btn btn-primary">Save Book</button><button type="button" id="bookCancel" class="btn btn-secondary">Cancel</button></div></form></div>
+        <div class="panel"><div class="panel-header"><h3>Book Catalogue</h3><span id="bookCount">0 books</span></div><div class="table-wrap"><table><thead><tr><th>ID</th><th>Book Name</th><th>Author</th><th>Category</th><th>ISBN</th><th>Status</th><th>Actions</th></tr></thead><tbody id="booksBody"></tbody></table></div></div>
+      </section>
+
+      <section id="page-students" class="page" aria-labelledby="studentsHeading">
+        <div class="page-head"><div><h1 id="studentsHeading">Students</h1><p>Register and manage library members.</p></div><button id="studentFormToggle" class="btn btn-primary">+ Register Student</button></div>
+        <div id="studentFormPanel" class="panel form-panel hidden"><h3 id="studentFormTitle" class="form-title">Register New Student</h3><form id="studentForm" novalidate><input id="studentId" type="hidden"><div class="form-grid"><div class="field"><label for="studentName">Name *</label><input id="studentName" required></div><div class="field"><label for="studentEmail">Email *</label><input id="studentEmail" type="email" required placeholder="student@college.edu"></div><div class="field"><label for="studentPhone">Phone Number *</label><input id="studentPhone" inputmode="numeric" maxlength="10" required placeholder="10-digit phone number"></div><div class="field"><label for="studentCourse">Course *</label><select id="studentCourse" required><option value="">Select course</option><option>BCA</option><option>BBA</option><option>B.Sc</option><option>B.Com</option></select></div></div><div class="form-actions"><button type="submit" class="btn btn-primary">Save Student</button><button type="button" id="studentCancel" class="btn btn-secondary">Cancel</button></div></form></div>
+        <div class="panel"><div class="panel-header"><h3>Registered Students</h3><span id="studentCount">0 students</span></div><div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Course</th><th>Actions</th></tr></thead><tbody id="studentsBody"></tbody></table></div></div>
+      </section>
+
+      <section id="page-issues" class="page" aria-labelledby="issuesHeading">
+        <div class="page-head"><div><h1 id="issuesHeading">Issue / Return</h1><p>Track lending, returns and overdue books.</p></div></div>
+        <div class="section-grid">
+          <div id="issueFormPanel" class="panel form-panel"><h3 class="form-title">Issue a Book</h3><p class="form-subtle">Only currently available books can be issued.</p><form id="issueForm" novalidate><div class="field"><label for="issueBook">Select Book *</label><select id="issueBook" required></select></div><div class="field"><label for="issueStudent">Select Student *</label><select id="issueStudent" required></select></div><div class="form-grid"><div class="field"><label for="issueDate">Issue Date *</label><input id="issueDate" type="date" required></div><div class="field"><label for="returnDate">Return Date *</label><input id="returnDate" type="date" required></div></div><div class="form-actions"><button type="submit" class="btn btn-primary">Issue Book</button><button type="button" id="issueReset" class="btn btn-secondary">Clear</button></div></form></div>
+          <div>
+            <div class="filter-bar"><div class="filter-grid"><div class="field"><label for="filterBook">Book</label><select id="filterBook"></select></div><div class="field"><label for="filterStudent">Student</label><select id="filterStudent"></select></div><div class="field"><label for="filterDate">Issue Date</label><input id="filterDate" type="date"></div><button id="clearFilters" class="btn btn-secondary" type="button">Clear Filters</button></div></div>
+            <div class="panel"><div class="panel-header"><h3>Issue Records</h3><span id="issueCount">0 records</span></div><div class="table-wrap"><table><thead><tr><th>ID</th><th>Book</th><th>Student</th><th>Issue Date</th><th>Return Date</th><th>Status</th><th>Action</th></tr></thead><tbody id="issuesBody"></tbody></table></div></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<div id="confirmModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="confirmTitle"><div class="modal modal-danger"><h3 id="confirmTitle">Confirm action</h3><p id="confirmText"></p><div class="modal-actions"><button id="confirmCancel" class="btn btn-secondary">Cancel</button><button id="confirmOk" class="btn btn-danger">Delete</button></div></div></div>
+<div id="toastStack" class="toast-stack" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+'use strict';
+const DEMO_USER='admin', DEMO_PASS='admin123', AUTH_KEY='libraryAuth';
+let books=[
+{id:1,name:'Clean Code',author:'Robert C. Martin',category:'Computer Science',isbn:'9780132350884'},
+{id:2,name:'The Alchemist',author:'Paulo Coelho',category:'Fiction',isbn:'9780061122415'},
+{id:3,name:'Atomic Habits',author:'James Clear',category:'Self Help',isbn:'9780735211292'},
+{id:4,name:'Rich Dad Poor Dad',author:'Robert Kiyosaki',category:'Finance',isbn:'9781612680194'},
+{id:5,name:'Introduction to Algorithms',author:'Cormen et al.',category:'Computer Science',isbn:'9780262033848'},
+{id:6,name:'The Psychology of Money',author:'Morgan Housel',category:'Finance',isbn:'9780857197689'},
+{id:7,name:'Wings of Fire',author:'A.P.J. Abdul Kalam',category:'Biography',isbn:'9788173711466'},
+{id:8,name:'Think and Grow Rich',author:'Napoleon Hill',category:'Self Help',isbn:'9781585424337'},
+{id:9,name:'Ikigai',author:'Hector Garcia',category:'Lifestyle',isbn:'9780143130727'}];
+let students=[
+{id:1,name:'Aarav Sharma',email:'aarav@college.edu',phone:'9876543210',course:'BCA'},
+{id:2,name:'Priya Patel',email:'priya@college.edu',phone:'9876501234',course:'BBA'},
+{id:3,name:'Riya Shah',email:'riya@college.edu',phone:'9823456712',course:'B.Sc'},
+{id:4,name:'Kunal Mehta',email:'kunal@college.edu',phone:'9812345678',course:'B.Com'},
+{id:5,name:'Ananya Singh',email:'ananya@college.edu',phone:'9898765432',course:'BCA'},
+{id:6,name:'Dev Joshi',email:'dev@college.edu',phone:'9765432109',course:'B.Sc'},
+{id:7,name:'Meera Desai',email:'meera@college.edu',phone:'9911223344',course:'B.Com'}];
+let issues=[
+{id:1,bookId:1,studentId:1,issueDate:'2026-09-20',returnDate:'2026-09-28',returned:true},
+{id:2,bookId:2,studentId:2,issueDate:'2026-09-27',returnDate:'2026-10-05',returned:false},
+{id:3,bookId:3,studentId:3,issueDate:'2026-09-18',returnDate:'2026-09-30',returned:false},
+{id:4,bookId:5,studentId:4,issueDate:'2026-10-02',returnDate:'2026-10-12',returned:false},
+{id:5,bookId:7,studentId:5,issueDate:'2026-09-29',returnDate:'2026-10-09',returned:false}];
+
+const $=id=>document.getElementById(id);
+const today=()=>new Date().toISOString().slice(0,10);
+const escapeHTML=value=>String(value).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+const getBook=id=>books.find(b=>b.id===Number(id));
+const getStudent=id=>students.find(s=>s.id===Number(id));
+const activeIssueForBook=bookId=>issues.find(i=>i.bookId===Number(bookId)&&!i.returned);
+const statusOf=issue=>issue.returned?'Returned':(issue.returnDate<today()?'Overdue':'Issued');
+
+function showToast(message,type='success'){const el=document.createElement('div');el.className=`toast ${type}`;el.textContent=message;$('toastStack').appendChild(el);setTimeout(()=>el.remove(),3200)}
+function saveData(){localStorage.setItem('libraryBooks',JSON.stringify(books));localStorage.setItem('libraryStudents',JSON.stringify(students));localStorage.setItem('libraryIssues',JSON.stringify(issues))}
+function loadData(){try{const b=localStorage.getItem('libraryBooks'),s=localStorage.getItem('libraryStudents'),i=localStorage.getItem('libraryIssues');if(b)books=JSON.parse(b);if(s)students=JSON.parse(s);if(i)issues=JSON.parse(i)}catch(e){console.warn('Stored demo data could not be read; using defaults.',e)}}
+function isAuthenticated(){return sessionStorage.getItem(AUTH_KEY)==='true'||localStorage.getItem(AUTH_KEY)==='true'}
+function setAuth(remember){(remember?localStorage:sessionStorage).setItem(AUTH_KEY,'true');if(remember)sessionStorage.removeItem(AUTH_KEY);else localStorage.removeItem(AUTH_KEY)}
+function logout(){sessionStorage.removeItem(AUTH_KEY);localStorage.removeItem(AUTH_KEY);$('appShell').classList.add('hidden');$('loginScreen').classList.remove('hidden');$('loginPass').value='';$('loginUser').focus();showToast('You have been logged out.','info')}
+function enterApp(){$('loginScreen').classList.add('hidden');$('appShell').classList.remove('hidden');renderAll()}
+
+$('loginForm').addEventListener('submit',e=>{e.preventDefault();const u=$('loginUser').value.trim(),p=$('loginPass').value,err=$('loginError');if(!u||!p){err.textContent='Please enter your username and password.';return}if(u!==DEMO_USER||p!==DEMO_PASS){err.textContent='Incorrect username or password. Use the demo credentials shown below.';return}err.textContent='';setAuth($('rememberMe').checked);enterApp();showToast('Welcome back, Admin!')});
+$('togglePassword').addEventListener('click',()=>{const input=$('loginPass');const visible=input.type==='text';input.type=visible?'password':'text';$('togglePassword').textContent=visible?'Show':'Hide'});
+$('loginUser').addEventListener('input',()=>$('loginError').textContent='');$('loginPass').addEventListener('input',()=>$('loginError').textContent='');
+
+function renderDashboard(){const active=issues.filter(i=>!i.returned);$('statBooks').textContent=books.length;$('statStudents').textContent=students.length;$('statIssued').textContent=active.length;$('recentIssuesBody').innerHTML=issues.slice().sort((a,b)=>b.id-a.id).slice(0,5).map(i=>`<tr><td>${escapeHTML(getBook(i.bookId)?.name||'Unknown')}</td><td>${escapeHTML(getStudent(i.studentId)?.name||'Unknown')}</td><td>${i.issueDate}</td><td>${i.returnDate}</td><td>${statusBadge(statusOf(i))}</td></tr>`).join('')||emptyRow(5,'No issue activity yet.')}
+function statusBadge(status){const cls=status==='Issued'?'badge-issued':status==='Returned'?'badge-returned':'badge-overdue';return `<span class="badge ${cls}">${status}</span>`}
+function emptyRow(cols,text){return `<tr><td colspan="${cols}" class="empty">${text}</td></tr>`}
+function renderBooks(){$('bookCount').textContent=`${books.length} book${books.length===1?'':'s'}`;$('booksBody').innerHTML=books.map(b=>{const issued=!!activeIssueForBook(b.id);return `<tr><td>BK-${String(b.id).padStart(3,'0')}</td><td><strong>${escapeHTML(b.name)}</strong></td><td>${escapeHTML(b.author)}</td><td>${escapeHTML(b.category)}</td><td>${escapeHTML(b.isbn)}</td><td><span class="badge ${issued?'badge-unavailable':'badge-available'}">${issued?'Issued':'Available'}</span></td><td><div class="actions"><button class="btn btn-warning" data-action="edit-book" data-id="${b.id}">Edit</button><button class="btn btn-danger" data-action="delete-book" data-id="${b.id}">Delete</button></div></td></tr>`}).join('')||emptyRow(7,'No books found. Add your first book to the catalogue.')}
+function renderStudents(){$('studentCount').textContent=`${students.length} student${students.length===1?'':'s'}`;$('studentsBody').innerHTML=students.map(s=>`<tr><td>ST-${String(s.id).padStart(3,'0')}</td><td><strong>${escapeHTML(s.name)}</strong></td><td>${escapeHTML(s.email)}</td><td>${escapeHTML(s.phone)}</td><td>${escapeHTML(s.course)}</td><td><button class="btn btn-warning" data-action="edit-student" data-id="${s.id}">Edit</button></td></tr>`).join('')||emptyRow(6,'No students registered yet.')}
+function populateIssueOptions(){const available=books.filter(b=>!activeIssueForBook(b.id));$('issueBook').innerHTML='<option value="">Select available book</option>'+available.map(b=>`<option value="${b.id}">${escapeHTML(b.name)}</option>`).join('');$('issueStudent').innerHTML='<option value="">Select student</option>'+students.map(s=>`<option value="${s.id}">${escapeHTML(s.name)}</option>`).join('');const oldBook=$('filterBook').value,oldStudent=$('filterStudent').value;$('filterBook').innerHTML='<option value="">All books</option>'+books.map(b=>`<option value="${b.id}">${escapeHTML(b.name)}</option>`).join('');$('filterStudent').innerHTML='<option value="">All students</option>'+students.map(s=>`<option value="${s.id}">${escapeHTML(s.name)}</option>`).join('');if([...$('filterBook').options].some(o=>o.value===oldBook))$('filterBook').value=oldBook;if([...$('filterStudent').options].some(o=>o.value===oldStudent))$('filterStudent').value=oldStudent}
+function renderIssues(){const bookFilter=$('filterBook').value,studentFilter=$('filterStudent').value,dateFilter=$('filterDate').value;const filtered=issues.filter(i=>(!bookFilter||String(i.bookId)===bookFilter)&&(!studentFilter||String(i.studentId)===studentFilter)&&(!dateFilter||i.issueDate===dateFilter));$('issueCount').textContent=`${filtered.length} record${filtered.length===1?'':'s'}`;$('issuesBody').innerHTML=filtered.slice().sort((a,b)=>b.id-a.id).map(i=>{const status=statusOf(i);return `<tr><td>IS-${String(i.id).padStart(3,'0')}</td><td>${escapeHTML(getBook(i.bookId)?.name||'Unknown')}</td><td>${escapeHTML(getStudent(i.studentId)?.name||'Unknown')}</td><td>${i.issueDate}</td><td>${i.returnDate}</td><td>${statusBadge(status)}</td><td>${i.returned?'<span class="badge badge-returned">Completed</span>':`<button class="btn btn-success" data-action="return-book" data-id="${i.id}">Return Book</button>`}</td></tr>`}).join('')||emptyRow(7,'No issue records match the selected filters.')}
+function renderAll(){renderDashboard();renderBooks();renderStudents();populateIssueOptions();renderIssues()}
+
+function setPage(page){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));$(`page-${page}`).classList.add('active');document.querySelectorAll('.nav-link[data-page]').forEach(n=>n.classList.toggle('active',n.dataset.page===page));const titles={dashboard:'Dashboard',books:'Books',students:'Students',issues:'Issue / Return'};$('pageTitle').textContent=titles[page];$('sidebar').classList.remove('open');$('sidebarOverlay').classList.remove('visible')}
+$('mainNav').addEventListener('click',e=>{const btn=e.target.closest('[data-page]');if(btn)setPage(btn.dataset.page)});
+$('mobileToggle').addEventListener('click',()=>{$('sidebar').classList.toggle('open');$('sidebarOverlay').classList.toggle('visible')});$('sidebarOverlay').addEventListener('click',()=>{$('sidebar').classList.remove('open');$('sidebarOverlay').classList.remove('visible')});
+$('sidebarLogout').addEventListener('click',logout);$('headerLogout').addEventListener('click',()=>{$('adminDropdown').classList.remove('open');logout()});$('adminTrigger').addEventListener('click',e=>{e.stopPropagation();const open=$('adminDropdown').classList.toggle('open');$('adminTrigger').setAttribute('aria-expanded',String(open))});document.addEventListener('click',e=>{if(!$('adminDropdown').contains(e.target)&&!$('adminTrigger').contains(e.target))$('adminDropdown').classList.remove('open')});
+
+function resetBookForm(){$('bookForm').reset();$('bookId').value='';$('bookFormTitle').textContent='Add New Book';$('bookEditNote').classList.add('hidden');$('bookFormPanel').classList.add('hidden')}
+$('bookFormToggle').addEventListener('click',()=>{$('bookFormPanel').classList.toggle('hidden');if(!$('bookFormPanel').classList.contains('hidden')){$('bookName').focus();$('bookFormTitle').textContent='Add New Book';$('bookEditNote').classList.add('hidden')}});$('bookCancel').addEventListener('click',resetBookForm);
+$('bookForm').addEventListener('submit',e=>{e.preventDefault();const name=$('bookName').value.trim(),author=$('bookAuthor').value.trim(),category=$('bookCategory').value.trim(),isbn=$('bookISBN').value.trim();if(!name||!author||!category||!isbn){showToast('Please complete all book fields.','error');return}const id=Number($('bookId').value);if(id){const b=getBook(id);Object.assign(b,{name,author,category,isbn});showToast('Book updated successfully.')}else{books.push({id:Math.max(0,...books.map(b=>b.id))+1,name,author,category,isbn});showToast('Book added successfully.')}saveData();resetBookForm();renderAll()});
+function editBook(id){const b=getBook(id);if(!b)return;$('bookId').value=b.id;$('bookName').value=b.name;$('bookAuthor').value=b.author;$('bookCategory').value=b.category;$('bookISBN').value=b.isbn;$('bookFormTitle').textContent='Edit Book';$('bookEditNote').classList.remove('hidden');$('bookFormPanel').classList.remove('hidden');$('bookName').focus();window.scrollTo({top:0,behavior:'smooth'})}
+function requestConfirm(title,text,okText,callback){$('confirmTitle').textContent=title;$('confirmText').textContent=text;$('confirmOk').textContent=okText;$('confirmModal').classList.remove('hidden');const finish=()=>{$('confirmModal').classList.add('hidden');$('confirmOk').onclick=null;$('confirmCancel').onclick=null};$('confirmCancel').onclick=finish;$('confirmOk').onclick=()=>{finish();callback()};$('confirmOk').focus()}
+function deleteBook(id){const b=getBook(id);if(!b)return;if(activeIssueForBook(id)){showToast('Return this book before deleting it.','error');return}requestConfirm('Delete book?',`Delete “${b.name}” from the catalogue? This cannot be undone.`,'Delete',()=>{books=books.filter(x=>x.id!==id);saveData();renderAll();showToast('Book deleted.','info')})}
+$('booksBody').addEventListener('click',e=>{const btn=e.target.closest('[data-action]');if(!btn)return;const id=Number(btn.dataset.id);if(btn.dataset.action==='edit-book')editBook(id);if(btn.dataset.action==='delete-book')deleteBook(id)});
+
+function resetStudentForm(){$('studentForm').reset();$('studentId').value='';$('studentFormTitle').textContent='Register New Student';$('studentFormPanel').classList.add('hidden')}
+$('studentFormToggle').addEventListener('click',()=>{$('studentFormPanel').classList.toggle('hidden');if(!$('studentFormPanel').classList.contains('hidden')){$('studentFormTitle').textContent='Register New Student';$('studentName').focus()}});$('studentCancel').addEventListener('click',resetStudentForm);
+$('studentForm').addEventListener('submit',e=>{e.preventDefault();const name=$('studentName').value.trim(),email=$('studentEmail').value.trim(),phone=$('studentPhone').value.trim(),course=$('studentCourse').value;if(!name||!email||!phone||!course){showToast('Please complete all student fields.','error');return}if(!/^\S+@\S+\.\S+$/.test(email)){showToast('Please enter a valid email address.','error');$('studentEmail').focus();return}if(!/^\d{10}$/.test(phone)){showToast('Phone number must contain exactly 10 digits.','error');$('studentPhone').focus();return}const id=Number($('studentId').value);if(id){const s=getStudent(id);Object.assign(s,{name,email,phone,course});showToast('Student updated successfully.')}else{students.push({id:Math.max(0,...students.map(s=>s.id))+1,name,email,phone,course});showToast('Student registered successfully.')}saveData();resetStudentForm();renderAll()});
+function editStudent(id){const s=getStudent(id);if(!s)return;$('studentId').value=s.id;$('studentName').value=s.name;$('studentEmail').value=s.email;$('studentPhone').value=s.phone;$('studentCourse').value=s.course;$('studentFormTitle').textContent='Edit Student';$('studentFormPanel').classList.remove('hidden');$('studentName').focus();window.scrollTo({top:0,behavior:'smooth'})}
+$('studentsBody').addEventListener('click',e=>{const btn=e.target.closest('[data-action="edit-student"]');if(btn)editStudent(Number(btn.dataset.id))});
+
+$('issueDate').value=today();$('returnDate').min=today();$('issueDate').addEventListener('change',()=>{$('returnDate').min=$('issueDate').value;if($('returnDate').value&&$('returnDate').value<$('issueDate').value)$('returnDate').value=$('issueDate').value});
+$('issueForm').addEventListener('submit',e=>{e.preventDefault();const bookId=Number($('issueBook').value),studentId=Number($('issueStudent').value),issueDate=$('issueDate').value,returnDate=$('returnDate').value;if(!bookId||!studentId||!issueDate||!returnDate){showToast('Please complete all issue fields.','error');return}if(returnDate<issueDate){showToast('Return date cannot be before issue date.','error');return}if(activeIssueForBook(bookId)){showToast('This book is already issued.','error');renderAll();return}issues.push({id:Math.max(0,...issues.map(i=>i.id))+1,bookId,studentId,issueDate,returnDate,returned:false});saveData();$('issueForm').reset();$('issueDate').value=today();$('returnDate').min=today();renderAll();showToast('Book issued successfully.')});
+$('issueReset').addEventListener('click',()=>{$('issueForm').reset();$('issueDate').value=today();$('returnDate').min=today()});
+function returnBook(id){const issue=issues.find(i=>i.id===id);if(!issue)return;issue.returned=true;saveData();renderAll();showToast('Book marked as returned.')}
+$('issuesBody').addEventListener('click',e=>{const btn=e.target.closest('[data-action="return-book"]');if(btn)returnBook(Number(btn.dataset.id))});
+['filterBook','filterStudent','filterDate'].forEach(id=>$(id).addEventListener('change',renderIssues));$('clearFilters').addEventListener('click',()=>{$('filterBook').value='';$('filterStudent').value='';$('filterDate').value='';renderIssues()});
+loadData();if(isAuthenticated()){enterApp()}else{$('loginScreen').classList.remove('hidden');$('appShell').classList.add('hidden');setTimeout(()=>$('loginUser').focus(),0)}
+</script>
+</body>
+</html>
